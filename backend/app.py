@@ -3,6 +3,7 @@ from flask_restful import Api
 
 from config import Config, db, bcrypt, migrate, jwt
 from models import User, Note
+from resources.auth import Signup, Login, Me
 
 app = Flask(__name__)
 app.config.from_object(Config)

@@ -4,6 +4,7 @@ from flask_restful import Api
 from config import Config, db, bcrypt, migrate, jwt
 from models import User, Note
 from resources.auth import Signup, Login, Me
+from resources.notes import Notes, NoteByID
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -20,6 +21,8 @@ from resources.auth import Signup, Login, Me
 api.add_resource(Signup, "/signup")
 api.add_resource(Login, "/login")
 api.add_resource(Me, "/me")
+api.add_resource(Notes, "/notes")
+api.add_resource(NoteByID, "/notes/<int:id>")
 
 
 @app.route("/")

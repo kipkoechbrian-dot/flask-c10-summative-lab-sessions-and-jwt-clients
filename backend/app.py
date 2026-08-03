@@ -16,8 +16,6 @@ jwt.init_app(app)
 
 api = Api(app)
 
-from resources.auth import Signup, Login, Me
-
 api.add_resource(Signup, "/signup")
 api.add_resource(Login, "/login")
 api.add_resource(Me, "/me")

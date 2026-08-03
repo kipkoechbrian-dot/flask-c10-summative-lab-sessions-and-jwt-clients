@@ -32,7 +32,8 @@ class Signup(Resource):
         db.session.add(user)
         db.session.commit()
 
-        access_token = create_access_token(identity=user.id)
+        # JWT identity must be a string
+        access_token = create_access_token(identity=str(user.id))
 
         return {
             "user": user_schema.dump(user),
@@ -47,15 +48,16 @@ class Login(Resource):
         username = data.get("username")
         password = data.get("password")
 
+        if not username or not password:
+            return {"error": "Username and password are required."}, 400
+
         user = User.query.filter_by(username=username).first()
 
-        if not user:
+        if not user or not user.authenticate(password):
             return {"error": "Invalid username or password."}, 401
 
-        if not user.authenticate(password):
-            return {"error": "Invalid username or password."}, 401
-
-        access_token = create_access_token(identity=user.id)
+        # JWT identity must be a string
+        access_token = create_access_token(identity=str(user.id))
 
         return {
             "user": user_schema.dump(user),
@@ -68,7 +70,8 @@ class Me(Resource):
     @jwt_required()
     def get(self):
 
-        current_user_id = get_jwt_identity()
+        # Convert the string identity back to an integer
+        current_user_id = int(get_jwt_identity())
 
         user = User.query.get(current_user_id)
 

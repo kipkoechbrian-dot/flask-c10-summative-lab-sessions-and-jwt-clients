@@ -6,10 +6,6 @@ __pycache__/
 
 .env
 
-.venv
+.venv/
 
-.pytest_cache
-
-migrations/
-
-Pipfile.lock
+.pytest_cache/
